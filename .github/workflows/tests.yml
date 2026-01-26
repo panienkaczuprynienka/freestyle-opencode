@@ -1,0 +1,107 @@
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Make mvnw executable
+        run: |
+          chmod +x mvnw
+
+      - name: Install Playwright browsers (Chromium)
+        run: |
+          ./mvnw -B -DskipTests exec:java \
+            -Dexec.classpathScope=test \
+            -Dexec.mainClass=com.microsoft.playwright.CLI \
+            -Dexec.args="install --with-deps chromium"
+
+      - name: Checkout gh-pages (for history)
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Run tests
+        run: |
+          ./mvnw -B test -Denv=stage -Dgroups=smoke -Dheadless=true -Dthreads=4 -Dtrace=on-failure -Dvideo=off
+
+      - name: Generate Allure report
+        if: always()
+        run: bash .github/scripts/generate_allure_report.sh
+
+      - name: Upload Allure HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: target/allure-report
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: |
+            target/allure-results
+            target/playwright-artifacts
+
+      - name: Publish report to GitHub Pages (gh-pages branch)
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: bash .github/scripts/prepare_pages_site.sh
+
+      - name: Deploy to gh-pages
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: site
+          keep_files: true
+          commit_message: "chore(pages): publish Allure report (run ${{ github.run_number }})"
+
+      - name: Add report link to job summary
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          REPORT_BASE_URL="https://${REPO_OWNER}.github.io/${REPO_NAME}"
+          {
+            echo "## Allure report"
+            echo "- Current: ${REPORT_BASE_URL}/reports/${RUN_NUMBER}/"
+            echo "- Latest: ${REPORT_BASE_URL}/latest/"
+            echo "- Runs: ${REPORT_BASE_URL}/reports/"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,12 @@
+target/
+.allure/
+.idea/
+.vscode/
+*.iml
+
+# If you ever generate Allure outside target
+allure-results/
+allure-report/
+
+# Playwright artifacts if configured elsewhere
+playwright-artifacts/
