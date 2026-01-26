@@ -16,6 +16,8 @@ Run smoke tests:
 ./mvnw test -Denv=stage -Dgroups=smoke -Dheadless=true -Dthreads=4
 ```
 
+Note: the `smoke` group currently contains one intentionally failing test (`ui.tests.IntentionalFailureUiTest`) to validate screenshot/trace attachments in Allure.
+
 Generate Allure HTML report:
 
 ```bash
