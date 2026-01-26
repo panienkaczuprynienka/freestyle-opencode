@@ -7,7 +7,7 @@ import ui.pages.HomePage;
 
 public final class IntentionalFailureUiTest extends BaseUiTest {
 
-  @Test(groups = {"smoke"}, description = "INTENTIONAL FAIL: verifies screenshot attachment in Allure")
+  @Test(groups = {"smoke", "no-retry"}, description = "INTENTIONAL FAIL: verifies screenshot attachment in Allure")
   public void intentionalFailureToSeeScreenshotInAllure() {
     HomePage home = new HomePage(page());
     home.open(CFG.baseUrl());

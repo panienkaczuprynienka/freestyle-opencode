@@ -28,7 +28,7 @@
     <exec.plugin.version>3.5.0</exec.plugin.version>
 
     <groups>smoke</groups>
-    <threads>4</threads>
+    <threads>5</threads>
   </properties>
 
   <dependencies>
@@ -100,6 +100,12 @@
         <configuration>
           <testFailureIgnore>false</testFailureIgnore>
           <groups>${groups}</groups>
+          <properties>
+            <property>
+              <name>listener</name>
+              <value>framework.retry.RetryTransformer</value>
+            </property>
+          </properties>
           <systemPropertyVariables>
             <groups>${groups}</groups>
             <threads>${threads}</threads>

@@ -13,10 +13,15 @@ Install Playwright browsers (Chromium):
 Run smoke tests:
 
 ```bash
-./mvnw test -Denv=stage -Dgroups=smoke -Dheadless=true -Dthreads=4
+./mvnw test -Denv=stage -Dgroups=smoke -Dheadless=true -Dthreads=5
 ```
 
 Note: the `smoke` group currently contains one intentionally failing test (`ui.tests.IntentionalFailureUiTest`) to validate screenshot/trace attachments in Allure.
+
+Retry (TestNG):
+
+- disabled by default
+- enable via `-DretryCount=2` (on CI it is enabled)
 
 Generate Allure HTML report:
 
