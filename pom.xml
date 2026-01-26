@@ -100,12 +100,6 @@
         <configuration>
           <testFailureIgnore>false</testFailureIgnore>
           <groups>${groups}</groups>
-          <properties>
-            <property>
-              <name>listener</name>
-              <value>framework.retry.RetryTransformer</value>
-            </property>
-          </properties>
           <systemPropertyVariables>
             <groups>${groups}</groups>
             <threads>${threads}</threads>

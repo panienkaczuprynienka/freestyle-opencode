@@ -1,7 +1,6 @@
 package framework.retry;
 
 import org.testng.IAnnotationTransformer;
-import org.testng.IRetryAnalyzer;
 import org.testng.annotations.ITestAnnotation;
 
 import java.lang.reflect.Constructor;
@@ -21,9 +20,6 @@ public final class RetryTransformer implements IAnnotationTransformer {
       return;
     }
 
-    Class<? extends IRetryAnalyzer> current = annotation.getRetryAnalyzerClass();
-    if (current == null || current == IRetryAnalyzer.class) {
-      annotation.setRetryAnalyzer(RetryAnalyzer.class);
-    }
+    annotation.setRetryAnalyzer(RetryAnalyzer.class);
   }
 }

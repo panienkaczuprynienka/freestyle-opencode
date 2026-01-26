@@ -23,6 +23,8 @@ Retry (TestNG):
 - disabled by default
 - enable via `-DretryCount=2` (on CI it is enabled)
 
+There is a demo test that fails once and passes on retry: `ui.tests.FlakyOnceUiTest`.
+
 Generate Allure HTML report:
 
 ```bash
