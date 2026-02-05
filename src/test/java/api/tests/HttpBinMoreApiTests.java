@@ -1,7 +1,6 @@
 package api.tests;
 
 import framework.base.BaseApiTest;
-import io.restassured.RestAssured;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -11,8 +10,7 @@ public final class HttpBinMoreApiTests extends BaseApiTest {
 
   @Test(groups = {"smoke"}, description = "Request headers are echoed back")
   public void headersAreReturned() {
-    RestAssured
-      .given()
+    api()
       .header("X-Demo", "hello")
       .when()
       .get("/headers")
@@ -24,8 +22,7 @@ public final class HttpBinMoreApiTests extends BaseApiTest {
 
   @Test(groups = {"smoke"}, description = "Status endpoint returns expected status")
   public void statusEndpointWorks() {
-    RestAssured
-      .given()
+    api()
       .when()
       .get("/status/204")
       .then()

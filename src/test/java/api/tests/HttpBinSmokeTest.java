@@ -1,7 +1,6 @@
 package api.tests;
 
 import framework.base.BaseApiTest;
-import io.restassured.RestAssured;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -9,8 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 public final class HttpBinSmokeTest extends BaseApiTest {
   @Test(groups = {"smoke"})
   public void getReturns200() {
-    RestAssured
-      .given()
+    api()
       .when()
       .get("/get")
       .then()
