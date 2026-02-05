@@ -11,6 +11,6 @@ public final class FlakyOnceUiTest extends BaseUiTest {
     HomePage home = new HomePage(page());
     home.open(CFG.baseUrl());
 
-    Assert.assertTrue(home.title().toLowerCase().contains("playwright"), "expected Playwright in title");
+    Assert.assertTrue(home.title().toLowerCase().contains("playwrightXX"), "expected Playwright in title");
   }
 }
