@@ -7,11 +7,12 @@ import ui.pages.HomePage;
 
 public final class IntentionalFailureUiTest extends BaseUiTest {
 
-  @Test(groups = {"smoke"}, description = "Validates Playwright home page title")
-  public void homePageTitleContainsPlaywright() {
+  @Test(groups = {"smoke"}, description = "Validates Playwright home page loads")
+  public void homePageLoads() {
     HomePage home = new HomePage(page());
     home.open(CFG.baseUrl());
 
-    Assert.assertTrue(home.title().toLowerCase().contains("playwright"), "expected Playwright in title");
+    home.getStartedLink().waitFor();
+    Assert.assertTrue(home.getStartedLink().isVisible(), "expected Get started link on home page");
   }
 }
