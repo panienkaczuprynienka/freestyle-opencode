@@ -51,7 +51,7 @@ jobs:
 
       - name: Run tests
         run: |
-          ./mvnw -B test -Denv=stage -Dgroups=smoke -Dheadless=true -Dthreads=5 -DretryCount=2 -Dtrace=on-failure -Dvideo=off
+          ./mvnw -B test -Denv=stage -Dgroups=smoke -Dheadless=true -Dthreads=5 -DretryCount=2 -Dtrace=on -Dvideo=on
 
       - name: Generate Allure report
         if: always()
