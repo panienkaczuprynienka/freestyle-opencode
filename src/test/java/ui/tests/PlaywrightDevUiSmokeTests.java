@@ -13,7 +13,7 @@ public final class PlaywrightDevUiSmokeTests extends BaseUiTest {
     HomePage home = new HomePage(page());
     home.open(CFG.baseUrl());
 
-    Assert.assertTrue(home.title().toLowerCase().contains("playwright"), "title should contain 'playwright'");
+    Assert.assertTrue(home.title().toLowerCase().contains("playwrightXXX"), "title should contain 'playwright'");
     Assert.assertTrue(home.getStartedLink().isVisible(), "Get started link should be visible");
   }
 
